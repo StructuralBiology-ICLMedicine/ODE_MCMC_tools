@@ -7,7 +7,7 @@
 ../../../bin/mcmc_bmeg_competition --params:bounds parameter_bounds.dat --exp_data:list experimental_inputs.dat --params:initial start_params.dat --prior:use_uninf --mcmc:chain_output_freq 10 --mcmc:inverse_temperature 1  --mcmc:burn_in 1  --proposal:use_mvn --proposal:mvn_mapping mapping.dat --proposal:mvn_sigma ProposalSigma.dat   --random_seed:rand_init --likelihood:student_t --likelihood:degf 5 --output_root OUTPUT
 ```
 
-Where ProposalSigma.dat is the multivariate normal (MVN) proposal distribution covariance matrix, mapping.dat describes the mapping of columns/rows the ProposalSigma.dat to parameter names or initial values, experimental\_inputs.dat is a file listing the experimental conditions and corresponding experimental data files (in the form of a vector of means and a covariance matrix), start\_params.dat is a vector describing the initial start parameters, and 0.1 and 20 are minimum standard deviation values permitted for each experimental data point. Descriptions of the options can be found by using the --help command line option.
+Where ProposalSigma.dat is the multivariate normal (MVN) proposal distribution covariance matrix, mapping.dat describes the mapping of columns/rows the ProposalSigma.dat to parameter names or initial values, experimental\_inputs.dat is a file listing the experimental conditions and corresponding experimental data files (in the form of a vector of means and a covariance matrix), start\_params.dat is a vector describing the initial start parameters. Descriptions of the options can be found by using the --help command line option.
 
 ## Running parallel tempering MCMC on the promoter competition data
 
