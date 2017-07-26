@@ -1,6 +1,6 @@
 # ODE\_MCMC\_tools
 
-ODE\_MCMC\_tool provides a C++ framework for Markov chain Monte Carlo (MCMC) and parallel tempering MCMC with ordinary differential equation models.
+ODE\_MCMC\_tool provides a C++ adaptive Markov chain Monte Carlo (MCMC) and parallel tempering MCMC framework for ordinary differential equation models, allowing Bayesian estimation of model parameters and/or initial concentrations.
 
 ## Requirements
 
