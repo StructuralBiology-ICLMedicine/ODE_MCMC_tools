@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model id="BMegModel">
+    <listOfFunctionDefinitions>
+      <functionDefinition id="f">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+            <apply>
+              <times/>
+              <ci> x </ci>
+              <cn> 2 </cn>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="hill_func">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> x </ci>
+            </bvar>
+            <bvar>
+              <ci> K </ci>
+            </bvar>
+            <bvar>
+              <ci> n </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <cn> 1 </cn>
+              <apply>
+                <plus/>
+                <cn> 1 </cn>
+                <apply>
+                  <power/>
+                  <apply>
+                    <divide/>
+                    <ci> x </ci>
+                    <ci> K </ci>
+                  </apply>
+                  <ci> n </ci>
+                </apply>
+              </apply>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="a_prime">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> a </ci>
+            </bvar>
+            <bvar>
+              <ci> Km </ci>
+            </bvar>
+            <apply>
+              <divide/>
+              <ci> a </ci>
+              <ci> Km </ci>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+      <functionDefinition id="one_plus_a_prime">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> a </ci>
+            </bvar>
+            <bvar>
+              <ci> Km </ci>
+            </bvar>
+            <apply>
+              <plus/>
+              <cn> 1 </cn>
+              <apply>
+                <ci> a_prime </ci>
+                <ci> a </ci>
+                <ci> Km </ci>
+              </apply>
+            </apply>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfCompartments>
+      <compartment id="TestTube" size="1"/>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="Mat_GFP" compartment="TestTube" initialConcentration="0"/>
+      <species id="GFP" compartment="TestTube" initialConcentration="0"/>
+      <species id="mRNA_GFP" compartment="TestTube" initialConcentration="0"/>
+      <species id="prom_GFP" compartment="TestTube" initialConcentration="1"/>
+      <species id="NTP" compartment="TestTube" initialConcentration="5000"/>
+      <species id="NMP" compartment="TestTube" initialConcentration="0"/>
+      <species id="AA" compartment="TestTube" initialConcentration="30000"/>
+      <species id="Ribo" compartment="TestTube" initialConcentration="10"/>
+      <species id="RNAP" compartment="TestTube" initialConcentration="1"/>
+      <species id="RNAP_prom_GFP" compartment="TestTube" initialConcentration="0"/>
+      <species id="RNAP_prom_GFP_elong" compartment="TestTube" initialConcentration="0"/>
+      <species id="Ribo_mRNA_GFP" compartment="TestTube" initialConcentration="0"/>
+      <species id="Ribo_mRNA_GFP_elong" compartment="TestTube" initialConcentration="0"/>
+      <species id="IInd_nrg_src" compartment="TestTube" initialConcentration="5000"/>
+    </listOfSpecies>
+    <listOfParameters>
+      <parameter id="tl_rate_gfp" value="10000"/>
+      <parameter id="tl_escape_rate_gfp" value="100"/>
+      <parameter id="tx_rate" value="1000"/>
+      <parameter id="tx_escape_rate_gfp" value="100"/>
+      <parameter id="rna_deg_rate_gfp" value="0.2"/>
+      <parameter id="gfp_mat_rate" value="0.06"/>
+      <parameter id="ntp_deg_rate" value="0.01"/>
+      <parameter id="nmp_deg_rate" value="0.01"/>
+      <parameter id="Km_ntp_rnap" value="0.1"/>
+      <parameter id="Km_ntp_ribo" value="10"/>
+      <parameter id="Km_aa_ribo" value="1000"/>
+      <parameter id="kon_prom" value="1"/>
+      <parameter id="koff_prom_gfp" value="4"/>
+      <parameter id="kon_mrna_gfp" value="400"/>
+      <parameter id="koff_mrna_gfp" value="100"/>
+      <parameter id="mrna_gfp_len" value="1150"/>
+      <parameter id="prot_gfp_len" value="245"/>
+      <parameter id="regen_rate" value="60"/>
+      <parameter id="Km_IInd_nrg_src" value="800"/>
+      <parameter id="Km_nmp_regen" value="15"/>
+      <parameter id="xylr_conc" value="0"/>
+      <parameter id="xylose_conc" value="0"/>
+      <parameter id="Kd" value="1"/>
+      <parameter id="Kx" value="1"/>
+      <parameter id="n" value="1"/>
+      <parameter id="m" value="1"/>
+      <parameter id="ribo_deg_rate" value="0.01"/>
+    </listOfParameters>
+    <listOfReactions>
+      <reaction id="gfp_mat_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="GFP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Mat_GFP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> gfp_mat_rate </ci>
+              <ci> GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mrna_gfp_deg_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA_GFP" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NMP">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <ci> mrna_gfp_len </ci>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> rna_deg_rate_gfp </ci>
+              <ci> mRNA_GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ntp_deg_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="NTP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NMP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> ntp_deg_rate </ci>
+              <ci> NTP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="nmp_deg_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="NMP"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> nmp_deg_rate </ci>
+              <ci> NMP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="prom_gfp_rnap_on_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="prom_GFP"/>
+          <speciesReference species="RNAP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="RNAP_prom_GFP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> kon_prom </ci>
+              <ci> prom_GFP </ci>
+              <ci> RNAP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="prom_gfp_rnap_off_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="RNAP_prom_GFP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="prom_GFP"/>
+          <speciesReference species="RNAP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> koff_prom_gfp </ci>
+              <ci> RNAP_prom_GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mrna_gfp_ribo_on_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA_GFP"/>
+          <speciesReference species="Ribo"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Ribo_mRNA_GFP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> kon_mrna_gfp </ci>
+              <ci> Ribo </ci>
+              <ci> mRNA_GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="mrna_gfp_ribo_off_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo_mRNA_GFP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mRNA_GFP"/>
+          <speciesReference species="Ribo"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> koff_mrna_gfp </ci>
+              <ci> Ribo_mRNA_GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tx_gfp_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="NTP">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <ci> mrna_gfp_len </ci>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+          <speciesReference species="RNAP_prom_GFP_elong"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="RNAP"/>
+          <speciesReference species="mRNA_GFP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> tx_rate </ci>
+              <ci> RNAP_prom_GFP_elong </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <ci> a_prime </ci>
+                  <ci> NTP </ci>
+                  <ci> Km_ntp_rnap </ci>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> mrna_gfp_len </ci>
+                  <apply>
+                    <ci> one_plus_a_prime </ci>
+                    <ci> NTP </ci>
+                    <ci> Km_ntp_rnap </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tl_gfp_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="NTP">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <apply>
+                  <times/>
+                  <cn type="integer"> 2 </cn>
+                  <ci> prot_gfp_len </ci>
+                </apply>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+          <speciesReference species="AA">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <ci> prot_gfp_len </ci>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+          <speciesReference species="Ribo_mRNA_GFP_elong"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="GFP"/>
+          <speciesReference species="NMP">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <apply>
+                  <times/>
+                  <cn type="integer"> 2 </cn>
+                  <ci> prot_gfp_len </ci>
+                </apply>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+          <speciesReference species="Ribo"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> tl_rate_gfp </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <ci> a_prime </ci>
+                    <ci> AA </ci>
+                    <ci> Km_aa_ribo </ci>
+                  </apply>
+                  <apply>
+                    <ci> a_prime </ci>
+                    <ci> NTP </ci>
+                    <ci> Km_ntp_ribo </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <times/>
+                  <ci> prot_gfp_len </ci>
+                  <apply>
+                    <ci> one_plus_a_prime </ci>
+                    <ci> AA </ci>
+                    <ci> Km_aa_ribo </ci>
+                  </apply>
+                  <apply>
+                    <ci> one_plus_a_prime </ci>
+                    <ci> NTP </ci>
+                    <ci> Km_ntp_ribo </ci>
+                  </apply>
+                </apply>
+              </apply>
+              <ci> Ribo_mRNA_GFP_elong </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="regen_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="NMP"/>
+          <speciesReference species="IInd_nrg_src"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NTP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> regen_rate </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <times/>
+                  <apply>
+                    <ci> a_prime </ci>
+                    <ci> NMP </ci>
+                    <ci> Km_nmp_regen </ci>
+                  </apply>
+                  <apply>
+                    <ci> a_prime </ci>
+                    <ci> IInd_nrg_src </ci>
+                    <ci> Km_IInd_nrg_src </ci>
+                  </apply>
+                </apply>
+                <apply>
+                  <times/>
+                  <apply>
+                    <ci> one_plus_a_prime </ci>
+                    <ci> NMP </ci>
+                    <ci> Km_nmp_regen </ci>
+                  </apply>
+                  <apply>
+                    <ci> one_plus_a_prime </ci>
+                    <ci> IInd_nrg_src </ci>
+                    <ci> Km_IInd_nrg_src </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tx_gfp_escape_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="RNAP_prom_GFP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="RNAP_prom_GFP_elong"/>
+          <speciesReference species="prom_GFP"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="NTP"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> tx_escape_rate_gfp </ci>
+              <ci> RNAP_prom_GFP </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <ci> a_prime </ci>
+                  <ci> NTP </ci>
+                  <ci> Km_ntp_rnap </ci>
+                </apply>
+                <apply>
+                  <ci> one_plus_a_prime </ci>
+                  <ci> NTP </ci>
+                  <ci> Km_ntp_rnap </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="tl_gfp_escape_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo_mRNA_GFP"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Ribo_mRNA_GFP_elong"/>
+          <speciesReference species="mRNA_GFP"/>
+        </listOfProducts>
+        <listOfModifiers>
+          <modifierSpeciesReference species="NTP"/>
+        </listOfModifiers>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> tl_escape_rate_gfp </ci>
+              <ci> Ribo_mRNA_GFP </ci>
+              <apply>
+                <divide/>
+                <apply>
+                  <ci> a_prime </ci>
+                  <ci> NTP </ci>
+                  <ci> Km_ntp_ribo </ci>
+                </apply>
+                <apply>
+                  <ci> one_plus_a_prime </ci>
+                  <ci> NTP </ci>
+                  <ci> Km_ntp_ribo </ci>
+                </apply>
+              </apply>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ribo_mrna_gfp_deg_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo_mRNA_GFP" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NMP">
+            <stoichiometryMath>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <ci> mrna_gfp_len </ci>
+              </math>
+            </stoichiometryMath>
+          </speciesReference>
+          <speciesReference species="Ribo"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> rna_deg_rate_gfp </ci>
+              <ci> Ribo_mRNA_GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ribo_mrna_gfp_elong_deg_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo_mRNA_GFP_elong" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="Ribo"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> rna_deg_rate_gfp </ci>
+              <ci> Ribo_mRNA_GFP_elong </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ribo_deg_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> ribo_deg_rate </ci>
+              <ci> Ribo </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ribo_elong_deg_gfp_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo_mRNA_GFP_elong" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> ribo_deg_rate </ci>
+              <ci> Ribo_mRNA_GFP_elong </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+      <reaction id="ribo_deg_gfp_rxn" reversible="false">
+        <listOfReactants>
+          <speciesReference species="Ribo_mRNA_GFP" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mRNA_GFP"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> TestTube </ci>
+              <ci> ribo_deg_rate </ci>
+              <ci> Ribo_mRNA_GFP </ci>
+            </apply>
+          </math>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>
