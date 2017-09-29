@@ -47,7 +47,7 @@ utils_src = Glob('src/utils/*.cpp')
 common_sources = utils_src
 
 gcc_link_flags = []
-gcc_link_flags = gcc_link_flags + ['-static']
+# gcc_link_flags = gcc_link_flags + ['-static']
 gcc_link_flags = gcc_link_flags + ['-g']
 gcc_link_flags = gcc_link_flags + ['-rdynamic']
 
