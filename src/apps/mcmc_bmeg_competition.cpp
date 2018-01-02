@@ -310,8 +310,8 @@ int main(int argc, char **argv){
 	std::shared_ptr<RAM_move_parameters_functor<ode_model_functor> > ram_move_functor(new RAM_move_parameters_functor<ode_model_functor>(sys, rand_ptr));
 
 
-	ram_move_functor->max_adapt_step = 1000;
-	cout << "# INFO: MAX_ADAPT_STEP = " <<  ram_move_functor->max_adapt_step;
+	ram_move_functor->max_adapt_step = std::numeric_limits< unsigned long>::max();//1000;
+	cout << "# INFO: MAX_ADAPT_STEP = " <<  ram_move_functor->max_adapt_step << std::endl;
 
     cout << "# reading parameter bounds for mover_functor" << endl;
     ram_move_functor->loadBounds(*sys, mover_bounds_file);
